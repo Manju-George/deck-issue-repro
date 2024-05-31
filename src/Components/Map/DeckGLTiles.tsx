@@ -32,7 +32,7 @@ const DeckGLTiles = ({ map, selectedLGA }: DeckGLTilesProps) => {
                  selectedLGA === "All"? "all": f.properties.lga_name,
              getFilterValue: (f: {
                 properties: { fire_risk_index: number; postcodes: string };
-            }) => [2, f.properties.fire_risk_index],
+            }) => [0, f.properties.fire_risk_index],
             filterRange: [
                 [0, 1],
                 [0, 1],
