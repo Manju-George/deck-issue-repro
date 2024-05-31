@@ -10,8 +10,6 @@ interface DeckGLTilesProps {
 
 const DeckGLTiles = ({ map, selectedLGA }: DeckGLTilesProps) => {
     const layerRef = useRef<DeckOverlay | undefined>();
-// Lockhart, Coolamon, Narrandera, Wagga Wagga
-    console.log({selectedLGA})
 
      const defaultProps = useMemo(() => {
         const systemFarmTileURL = `https://s3.ap-southeast-2.amazonaws.com/public.data.dasintel.io/deckgl-demo/farm_tiles_demo/{z}/{x}/{y}.pbf`;
@@ -28,14 +26,20 @@ const DeckGLTiles = ({ map, selectedLGA }: DeckGLTilesProps) => {
             // extent: [w, s, e, n],
             getFilterEnabled: true,
             extensions: [
-                new DataFilterExtension({ categorySize: 1 }),
+                new DataFilterExtension({ filterSize:2, categorySize: 1 }),
             ],
             getFilterCategory: (f: { properties: { lga_name: string } }) =>
                  selectedLGA === "All"? "all": f.properties.lga_name,
-            // getFilterCategory:(f: any) => console.log({f}),
+             getFilterValue: (f: {
+                properties: { fire_risk_index: number; postcodes: string };
+            }) => [2, f.properties.fire_risk_index],
+            filterRange: [
+                [0, 1],
+                [0, 1],
+            ],
             filterCategories: [selectedLGA,"all"],
             updateTriggers: {
-                // Recalculate fillColor when filterEnabled
+                // Recalculate
                 getFilterCategory: [selectedLGA],
             },
             debounceTime: 100,
